@@ -1,0 +1,436 @@
+{
+  "info": {
+    "_postman_id": "ee39304e-3b60-421b-9fbc-ef864c9e4124",
+    "name": "Pruebas_API_Soporte",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57424590",
+    "_collection_link": "https://go.postman.co/collection/57424590-ee39304e-3b60-421b-9fbc-ef864c9e4124?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Iniciar Sesion",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.sendRequest({\n    url: 'http://127.0.0.1:8000/api-auth/login/',\n    method: 'GET'\n}, function (err, res, { cookies }) {\n    if (!err) {\n        const csrfToken = cookies.get('csrftoken');\n        if (csrfToken) {\n            pm.collectionVariables.set('csrfToken', csrfToken);\n        }\n    }\n});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.globals.set(\"csrftoken\", pm.cookies.get(\"csrftoken\"));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": "Ohj4QbQw8iPxiuavkNvTLxTE7q7FFDXY"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "admin123",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api-auth/login/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api-auth",
+            "login",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 1: Crear solicitud.",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": "KSXBRJLc5Zx4k1lkgdoMWI0411BgN1zl"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"titulo\": \"Falla en el puerto USB 2\",\r\n    \"descripcion\": \"no se detectan dispositivos conectados en el puerto 2\",\r\n    \"categoria\": \"Hardware\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 2: Usuario consulta sus solicitudes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": ""
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "usuariotest",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "usuariopass123",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 3: Consultar solicitud ajena",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "cliente2",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "usuariopass2",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/6/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            "6",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 4: Usuario normal intenta cambiar el estado",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": "KSXBRJLc5Zx4k1lkgdoMWI0411BgN1zl"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"estado\": \"En proceso\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/9/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            "9",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 5: Administrador cambia el estado",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": "oBOCBvMZmWBvcJ11JQK8WhHhIat9b58n"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"estado\": \"Resuelta\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/5/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            "5",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 6: Usuario envía datos inválidos",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": "mb2BG94MWEQX9MCItAzY08oUPBlf7VrM"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"titulo\": \"\", \"categoria\": \"Falsa\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 7: Administrador elimina una solicitud",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": "Sp8NcehC9D0sSAOwKH6eJY5Zswdoo01t"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/2/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            "2",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 8: Cliente sin autenticación intenta acceder a la API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 9: Usuario cierra sesión e intenta reutilizarla",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Escenario 10: Solicitud de escritura por sesión sin token CSRF válido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-CSRFToken",
+            "value": "Ohj4QbQw8iPxiuavkNvTLxTE7q7FFDXY",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"titulo\": \"Prueba1111\", \"categoria\": \"Hardware\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/solicitudes/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "solicitudes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "csrfToken",
+      "value": ""
+    }
+  ]
+}
